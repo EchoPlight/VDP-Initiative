@@ -21,13 +21,13 @@
             padding: 20px 10px;
             background-color: #ffffff;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            box-sizing: border-box; /* Include padding in width calculation */
+            box-sizing: border-box; /* Ensures responsiveness is perfect */
         }
         
         /* URGENCY HEADER (RED FLAG) */
         .urgency-header {
             color: #cc0000; /* Deep Red */
-            font-size: 1.6em; /* Smaller on mobile */
+            font-size: 1.6em; 
             text-align: center;
             padding: 10px 5px;
             border: 4px solid #cc0000;
@@ -57,28 +57,27 @@
             color: #008000; /* CashApp Green */
             margin-bottom: 15px;
             display: block;
-            user-select: all; /* Optimization: allows easy tap-and-hold copy */
+            user-select: all; 
             border: 1px dashed #008000;
             padding: 5px 0;
         }
         .donation-link {
-            display: inline-block;
-            margin: 10px auto;
+            display: block; /* CHANGE: Forces buttons to stack cleanly on mobile */
+            width: 80%; /* Takes up 80% of the container width */
+            max-width: 400px;
+            margin: 12px auto; /* Ensures vertical separation */
             padding: 18px 30px;
             background-color: #008000; /* CashApp Green */
             color: white;
             text-decoration: none;
-            font-size: 1.5em;
+            font-size: 1.3em;
             border-radius: 40px;
             font-weight: bold;
             transition: background-color 0.3s;
-            white-space: nowrap; /* Prevents wrapping on small screens */
-            display: block; /* Forces buttons onto separate lines for mobile clarity */
-            margin-bottom: 15px;
         }
-        /* PayPal Styling for distinct visual channel */
+        /* New PayPal Styling for visual differentiation */
         .paypal-link {
-            background-color: #0044aa; /* Navy Blue */
+            background-color: #0044aa; /* Navy Blue for contrast */
         }
         .donation-link:hover {
             background-color: #006400; /* Darker green on hover */
@@ -112,11 +111,6 @@
             .cta-box h2 {
                 font-size: 2.5em;
             }
-            .donation-link {
-                display: inline-block; /* Allows side-by-side on larger screens */
-                margin-left: 10px;
-                margin-right: 10px;
-            }
         }
     </style>
 </head>
@@ -133,7 +127,6 @@
             <p><strong>Tap and Hold the handle above to copy.</strong> Stabilize the Causal Engine now. Your single action determines mission continuation.</p>
             
             <a href="https://cash.app/$VDPSystemsLLC" class="donation-link" target="_blank">FUND THE INITIATIVE NOW (CashApp)</a>
-            
             <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=pennysuevan&#64;gmail.com&item_name=VDP%20Causal%20Engineering%20Initiative" class="donation-link paypal-link" target="_blank">FUND VIA PAYPAL</a>
             
             <p style="margin-top: 15px; font-size: 0.9em; color: #cc0000;">**HIGH-TTP ALERT:** Using multiple channels minimizes donor friction and maximizes capital collapse.</p>
@@ -153,10 +146,8 @@
         
         <div class="cta-box">
             <p><strong>Close the 5-Day Gap. Fund the Future Now.</strong></p>
-            
             <a href="https://cash.app/$VDPSystemsLLC" class="donation-link" target="_blank">FUND THE INITIATIVE NOW (CashApp)</a>
             <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=pennysuevan&#64;gmail.com&item_name=VDP%20Causal%20Engineering%20Initiative" class="donation-link paypal-link" target="_blank">FUND VIA PAYPAL</a>
-            
             <p style="margin-top: 10px; font-size: 0.9em;">CashApp Handle: $VDPSystemsLLC. Please use the links above for direct funding.</p>
         </div>
         
