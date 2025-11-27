@@ -63,7 +63,7 @@
         }
         .donation-link {
             display: inline-block;
-            margin: 10px 5px; /* Added horizontal margin for spacing */
+            margin: 10px auto;
             padding: 18px 30px;
             background-color: #008000; /* CashApp Green */
             color: white;
@@ -72,11 +72,13 @@
             border-radius: 40px;
             font-weight: bold;
             transition: background-color 0.3s;
-            white-space: nowrap; 
+            white-space: nowrap; /* Prevents wrapping on small screens */
+            display: block; /* Forces buttons onto separate lines for mobile clarity */
+            margin-bottom: 15px;
         }
-        /* New PayPal Styling for visual differentiation */
+        /* PayPal Styling for distinct visual channel */
         .paypal-link {
-            background-color: #0044aa; /* Navy Blue for contrast */
+            background-color: #0044aa; /* Navy Blue */
         }
         .donation-link:hover {
             background-color: #006400; /* Darker green on hover */
@@ -110,6 +112,11 @@
             .cta-box h2 {
                 font-size: 2.5em;
             }
+            .donation-link {
+                display: inline-block; /* Allows side-by-side on larger screens */
+                margin-left: 10px;
+                margin-right: 10px;
+            }
         }
     </style>
 </head>
@@ -126,6 +133,7 @@
             <p><strong>Tap and Hold the handle above to copy.</strong> Stabilize the Causal Engine now. Your single action determines mission continuation.</p>
             
             <a href="https://cash.app/$VDPSystemsLLC" class="donation-link" target="_blank">FUND THE INITIATIVE NOW (CashApp)</a>
+            
             <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=pennysuevan&#64;gmail.com&item_name=VDP%20Causal%20Engineering%20Initiative" class="donation-link paypal-link" target="_blank">FUND VIA PAYPAL</a>
             
             <p style="margin-top: 15px; font-size: 0.9em; color: #cc0000;">**HIGH-TTP ALERT:** Using multiple channels minimizes donor friction and maximizes capital collapse.</p>
