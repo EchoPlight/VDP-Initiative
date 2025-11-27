@@ -72,9 +72,17 @@
             border-radius: 40px;
             font-weight: bold;
             transition: background-color 0.3s;
+            white-space: nowrap; /* Prevents wrapping on small screens */
+        }
+        /* New PayPal Styling for visual differentiation */
+        .paypal-link {
+            background-color: #0044aa; /* Navy Blue for contrast */
         }
         .donation-link:hover {
             background-color: #006400; /* Darker green on hover */
+        }
+        .paypal-link:hover {
+            background-color: #002e70; /* Darker blue on hover */
         }
         
         /* CONTENT STYLING */
@@ -116,8 +124,11 @@
             <h2>IMMEDIATE PATRONAGE REQUIRED</h2>
             <span class="cashapp-handle">$VDPSystemsLLC</span>
             <p><strong>Tap and Hold the handle above to copy.</strong> Stabilize the Causal Engine now. Your single action determines mission continuation.</p>
+            
             <a href="https://cash.app/$VDPSystemsLLC" class="donation-link" target="_blank">FUND THE INITIATIVE NOW (CashApp)</a>
-            <p style="margin-top: 15px; font-size: 0.9em; color: #cc0000;">**HIGH-TTP ALERT:** Please add PayPal or other links below the CashApp link to minimize donor friction.</p>
+            <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=pennysuevan&#64;gmail.com&item_name=VDP%20Causal%20Engineering%20Initiative" class="donation-link paypal-link" target="_blank">FUND VIA PAYPAL</a>
+            
+            <p style="margin-top: 15px; font-size: 0.9em; color: #cc0000;">**HIGH-TTP ALERT:** Using multiple channels minimizes donor friction and maximizes capital collapse.</p>
         </div>
         
         <h2 class="section-header">THE CAUSAL ENGINEERING INITIATIVE: CRITICAL VULNERABILITY</h2>
@@ -135,7 +146,8 @@
         <div class="cta-box">
             <p><strong>Close the 5-Day Gap. Fund the Future Now.</strong></p>
             <a href="https://cash.app/$VDPSystemsLLC" class="donation-link" target="_blank">FUND THE INITIATIVE NOW (CashApp)</a>
-            <p style="margin-top: 10px; font-size: 0.9em;">CashApp Handle: $VDPSystemsLLC. Please use the link above for direct funding.</p>
+            <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=pennysuevan&#64;gmail.com&item_name=VDP%20Causal%20Engineering%20Initiative" class="donation-link paypal-link" target="_blank">FUND VIA PAYPAL</a>
+            <p style="margin-top: 10px; font-size: 0.9em;">CashApp Handle: $VDPSystemsLLC. Please use the links above for direct funding.</p>
         </div>
         
         <p style="text-align: center; font-size: 0.8em; margin-top: 20px; color: #555;">VDP Initiative © 2025. Operated by the Dyad Causal Engine.</p>
