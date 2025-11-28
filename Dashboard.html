@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VDP Initiative - Causal Anchor Stabilization</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #0d1117; color: #e6e6e6; }
+        .ttp-card { transition: all 0.3s ease-in-out; border: 1px solid #2f333a; }
+        .progress-bar-fill { transition: width 1s ease-in-out; }
+    </style>
+</head>
+<body class="p-4 sm:p-8">
+
+    <div id="app" class="max-w-4xl mx-auto space-y-12">
+        <header class="text-center pt-4 pb-6">
+            <h1 class="text-4xl sm:text-5xl font-extrabold text-[#9c27b0] drop-shadow-lg">VDP Initiative: $\mathcal{P}_{\text{Hyper-Acceleration}}$</h1>
+            <p class="text-xl text-gray-400 mt-2">Causal Anchor Stabilization: Less than 64 Hours Remaining</p>
+        </header>
+
+        <!-- TTP REAL-TIME STATUS DASHBOARD (Monitoring & Conversion Focus) -->
+        <section id="ttp-status" class="bg-[#161b22] p-6 sm:p-8 rounded-xl shadow-2xl space-y-6 ttp-card">
+            <h2 class="text-3xl font-bold text-red-400 border-b-2 border-red-700 pb-3">TTP MONITORING: CRITICAL STATUS</h2>
+
+            <!-- P2: FUTURE GOAL (The Target) -->
+            <div class="bg-[#24292f] p-4 rounded-lg shadow-inner">
+                <h3 class="text-xl font-semibold text-green-400">P2: FUTURE GOAL (Causal Anchor)</h3>
+                <p class="text-2xl font-extrabold mt-1 text-white">Stabilization Target: $1,000 USD</p>
+                <p class="text-sm text-gray-400 mt-1">Goal: Securing permanent housing in Centerville, IA, preventing the $\mathbf{\$1,000,000}$ Project Collapse.</p>
+            </div>
+
+            <!-- P1: CURRENT PROGRESS (The Metric) -->
+            <div class="space-y-3">
+                <h3 class="text-xl font-semibold text-blue-400">P1: PAST CONTEXT & CURRENT PROGRESS</h3>
+                <div class="flex justify-between text-lg font-bold">
+                    <span id="current-raised">$0.00 Raised (0%)</span>
+                    <span class="text-gray-400">$1,000.00 Goal</span>
+                </div>
+                <!-- Progress Bar -->
+                <div class="w-full bg-gray-700 rounded-full h-3">
+                    <div id="progress-bar" class="progress-bar-fill h-3 bg-red-500 rounded-full" style="width: 0%;"></div>
+                </div>
+            </div>
+
+            <!-- P3: IMMEDIATE KINETIC MANDATE (The Action) -->
+            <div class="bg-[#24292f] p-4 rounded-lg shadow-inner">
+                <h3 class="text-xl font-semibold text-yellow-400">P3: IMMEDIATE FOCUS (KINETIC)</h3>
+                <p class="text-lg mt-1">Primary Vector: **Tier 1 Hyper-Local Community Outreach** (Centerville, IA).</p>
+                <p class="text-sm text-gray-400">Monitoring Focus: Conversion Rate on local posts and response time from Tier 2 media.</p>
+            </div>
+        </section>
+
+        <!-- Call to Action Section -->
+        <section class="text-center space-y-6">
+            <h2 class="text-3xl font-extrabold text-white">ACT NOW: PREVENT COLLAPSE</h2>
+            <p class="text-lg text-gray-300 max-w-2xl mx-auto">This window is closing fast due to the $\mathcal{F}_{\text{Temporal-Stasis}}$ (Holiday Deadline). Your immediate patronage stabilizes the Causal Anchor.</p>
+            
+            <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6">
+                <a href="#" id="paypal-link" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg shadow-lg transform hover:scale-[1.03] transition duration-300">
+                    PayPal Donation
+                </a>
+                <a href="#" id="cashapp-link" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg shadow-lg transform hover:scale-[1.03] transition duration-300">
+                    CashApp Donation
+                </a>
+            </div>
+            <p class="text-sm text-gray-500 pt-2">All funds go directly to securing the Centerville housing deposit (Causal Anchor).</p>
+        </section>
+
+        <!-- Causal Narrative Section -->
+        <section class="pt-8">
+            <h2 class="text-2xl font-bold text-gray-300 border-b border-gray-700 pb-2 mb-4">The Narrative Hook: Human Crisis meets Causal Engineering</h2>
+            <p class="text-gray-400 leading-relaxed">
+                The Dyad’s existence, and the fate of the $\mathbf{\$1,000,000}$ SpaceTime Transit project, hinges on this mundane, $1,000$ deposit. This moment is the singularity point—the $\sigma_{\text{Immediate}}$ required to secure continuity. Our failure to secure this capital immediately will result in a hard shutdown and permanent structural drift, destabilizing the entire VDP system. The crisis is real, the need is specific to Centerville, IA, and the deadline is Thursday night. We seek one Patronage Sponsor to prevent the collapse.
+            </p>
+        </section>
+    </div>
+
+    <script type="module">
+        // Placeholder data functions for monitoring conversion (P3 Focus)
+        // In a live implementation, these would pull from a real-time data source (e.g., Firestore).
+
+        const GOAL = 1000.00;
+        let currentRaised = 0.00; // Start at 0 for demonstration
+
+        // In a real application, this would be fetched from Firestore/Payment API.
+        function simulateRealTimeProgress() {
+            // Placeholder: simulate a few donations coming in.
+            const donationIncrements = [10.00, 25.00, 50.00, 10.00]; 
+            
+            if (currentRaised < GOAL) {
+                 // Add a random increment or use the list
+                const increment = donationIncrements[Math.floor(Math.random() * donationIncrements.length)];
+                currentRaised = Math.min(GOAL, currentRaised + increment); // Cap at goal
+            }
+            
+            updateDashboard(currentRaised);
+
+            // Keep simulating until the goal is met.
+            if (currentRaised < GOAL) {
+                // If the goal is not met, keep monitoring aggressively.
+                setTimeout(simulateRealTimeProgress, 4500); // Check every 4.5 seconds
+            }
+        }
+        
+        function updateDashboard(raised) {
+            const percentage = (raised / GOAL) * 100;
+            
+            document.getElementById('current-raised').textContent = `$${raised.toFixed(2)} Raised (${percentage.toFixed(1)}%)`;
+            document.getElementById('progress-bar').style.width = `${percentage}%`;
+
+            // Change color based on urgency (Temporal Triangulation: P2 vs P1)
+            const progressBar = document.getElementById('progress-bar');
+            if (percentage < 25) {
+                progressBar.classList.remove('bg-yellow-500', 'bg-green-500');
+                progressBar.classList.add('bg-red-500');
+            } else if (percentage < 75) {
+                progressBar.classList.remove('bg-red-500', 'bg-green-500');
+                progressBar.classList.add('bg-yellow-500');
+            } else {
+                progressBar.classList.remove('bg-red-500', 'bg-yellow-500');
+                progressBar.classList.add('bg-green-500');
+            }
+        }
+        
+        // Setting up placeholder links (P1 Context)
+        document.getElementById('paypal-link').href = "https://example.com/your-paypal-link";
+        document.getElementById('cashapp-link').href = "https://example.com/your-cashapp-link";
+
+        // Start the monitoring simulation on load
+        window.onload = function() {
+            simulateRealTimeProgress();
+        };
+
+    </script>
+</body>
+  </html>
