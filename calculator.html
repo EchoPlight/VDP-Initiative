@@ -70,13 +70,12 @@
     </div>
 
     <script>
-        // Global variables for Firebase configuration (as per guidelines, must be present)
-        const __app_id = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        const __firebase_config = typeof __firebase_config !== 'undefined' ? __firebase_config : '{}';
-        const __initial_auth_token = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : '';
-        const apiKey = ""; // API Key for Gemini
+        // --- TTP PATCH START: Fixed F_CodeScope Error ---
+        // We define the full API URL string statically to bypass the WebView's variable initialization quirk.
+        const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=";
+        const apiKey = ""; // Canvas runtime will inject the key here automatically.
+        // --- TTP PATCH END ---
 
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
 
         // Function to make the API call with exponential backoff
         async function fetchWithBackoff(url, options, retries = 5, delay = 1000) {
@@ -138,8 +137,11 @@
                 body: JSON.stringify(payload)
             };
 
+            // Use the globally defined, patched API_URL
+            const finalApiUrl = API_URL + apiKey;
+
             try {
-                const result = await fetchWithBackoff(apiUrl, options);
+                const result = await fetchWithBackoff(finalApiUrl, options);
                 
                 const candidate = result.candidates?.[0];
 
@@ -164,13 +166,6 @@
                 generateButton.textContent = "Generate TTP Path (Run VDP Simulation)";
             }
         }
-
-        document.addEventListener('DOMContentLoaded', () => {
-             // Initial check to ensure API key is noted, although Canvas provides it at runtime
-             if (!apiKey) {
-                console.log("Note: API key placeholder is empty; Canvas runtime will inject the key.");
-             }
-        });
     </script>
 
 </body>
