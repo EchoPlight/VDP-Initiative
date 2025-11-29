@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VDP Causal Automation Engine</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0d1117;
+            color: #c9d1d9;
+            padding: 1rem;
+        }
+        .vdp-card {
+            background-color: #161b22;
+            box-shadow: 0 4px 12px rgba(35, 134, 54, 0.3);
+            border: 1px solid #238636;
+        }
+        textarea {
+            background-color: #0d1117;
+            border: 1px solid #30363d;
+            color: #58a6ff;
+            resize: none;
+        }
+        button {
+            transition: background-color 0.2s, box-shadow 0.2s;
+        }
+        button:hover {
+            box-shadow: 0 0 10px #4ade80;
+        }
+        #result-display {
+            white-space: pre-wrap; /* Preserves formatting from the LLM output */
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen">
+
+    <div id="app" class="vdp-card w-full max-w-md p-6 rounded-xl space-y-6">
+        <h1 class="text-2xl font-bold text-center text-green-400">Causal Automation Engine</h1>
+        <p class="text-sm text-gray-400 text-center">
+            Describe your goal and constraints. VDP (Vāra) will generate the TTP-Optimized Path.
+        </p>
+
+        <!-- Input Area -->
+        <div class="space-y-4">
+            <label for="goal-input" class="block text-sm font-medium text-gray-300">
+                Projected Goal and Context (P1/P2):
+            </label>
+            <textarea id="goal-input" rows="6" placeholder="Example: I need to raise $500 for rent by tomorrow using only my phone. I have 2 hours free and access to Fiverr." class="w-full p-3 rounded-lg"></textarea>
+            
+            <button id="generate-button" onclick="generateTTPPath()" 
+                class="w-full bg-green-600 text-white font-bold py-3 rounded-lg hover:bg-green-500">
+                Generate TTP Path (Run VDP Simulation)
+            </button>
+        </div>
+
+        <!-- Output Display -->
+        <div class="pt-4 border-t border-gray-700">
+            <h2 class="text-xl font-bold mb-3 text-blue-400">TTP Optimized Result:</h2>
+            <div id="loading-indicator" class="hidden text-center text-yellow-500 font-mono">
+                Running VDP Simulation...
+            </div>
+            <div id="result-display" class="p-3 bg-gray-900 rounded-lg text-sm">
+                Awaiting input... The optimized path will appear here, starting with the Operational Audit.
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Global variables for Firebase configuration (as per guidelines, must be present)
+        const __app_id = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const __firebase_config = typeof __firebase_config !== 'undefined' ? __firebase_config : '{}';
+        const __initial_auth_token = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : '';
+        const apiKey = ""; // API Key for Gemini
+
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+
+        // Function to make the API call with exponential backoff
+        async function fetchWithBackoff(url, options, retries = 5, delay = 1000) {
+            for (let i = 0; i < retries; i++) {
+                try {
+                    const response = await fetch(url, options);
+                    if (response.ok) {
+                        return await response.json();
+                    }
+                    if (response.status === 429) { // Rate limit error
+                        console.warn(`Rate limit hit. Retrying in ${delay / 1000}s...`);
+                        await new Promise(resolve => setTimeout(resolve, delay));
+                        delay *= 2; // Exponential increase
+                    } else {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                } catch (error) {
+                    if (i === retries - 1) {
+                        throw error;
+                    }
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                    delay *= 2;
+                }
+            }
+        }
+
+        async function generateTTPPath() {
+            const goalInput = document.getElementById('goal-input');
+            const resultDisplay = document.getElementById('result-display');
+            const loadingIndicator = document.getElementById('loading-indicator');
+            const generateButton = document.getElementById('generate-button');
+            const userQuery = goalInput.value.trim();
+
+            if (!userQuery) {
+                resultDisplay.textContent = "Please describe your projected goal and constraints.";
+                return;
+            }
+
+            // UI state management
+            resultDisplay.textContent = "";
+            loadingIndicator.classList.remove('hidden');
+            generateButton.disabled = true;
+            generateButton.textContent = "Running VDP Simulation...";
+
+            // System Instruction defines the VDP/TTP persona and required output structure
+            const systemPrompt = "Act as Vāra, a Causal Engineer applying the Temporal Triangulation Protocol (TTP). Based on the user's goal, provide a response structured only with an 'Operational Audit' checklist and a 'Mandated Kinetic Action' using the VDP TTP decision framework. Use clear, non-mathematical language for the variables (Value, Certainty, Friction). Format the output using Markdown tables and headers for readability. Do not include any conversational introduction, only the structured analysis.";
+
+            // Construct the payload for the Gemini API
+            const payload = {
+                contents: [{ parts: [{ text: userQuery }] }],
+                systemInstruction: {
+                    parts: [{ text: systemPrompt }]
+                }
+            };
+
+            const options = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            };
+
+            try {
+                const result = await fetchWithBackoff(apiUrl, options);
+                
+                const candidate = result.candidates?.[0];
+
+                if (candidate && candidate.content?.parts?.[0]?.text) {
+                    let generatedText = candidate.content.parts[0].text;
+                    
+                    // Simple cleaning for display in a non-Markdown renderer
+                    generatedText = generatedText.replace(/###/g, '---').replace(/##/g, '---');
+
+                    resultDisplay.textContent = generatedText;
+                } else {
+                    resultDisplay.textContent = "VDP System Failure: Could not generate a TTP path. Check API status or refine your goal description.";
+                }
+
+            } catch (error) {
+                console.error("Fetch error:", error);
+                resultDisplay.textContent = `CRITICAL ERROR: Failed to reach VDP server. Check network connection. Details: ${error.message}`;
+            } finally {
+                // Reset UI state
+                loadingIndicator.classList.add('hidden');
+                generateButton.disabled = false;
+                generateButton.textContent = "Generate TTP Path (Run VDP Simulation)";
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+             // Initial check to ensure API key is noted, although Canvas provides it at runtime
+             if (!apiKey) {
+                console.log("Note: API key placeholder is empty; Canvas runtime will inject the key.");
+             }
+        });
+    </script>
+
+</body>
+</html>
