@@ -36,11 +36,12 @@
         .key-instruction {
             padding: 0.5rem;
             margin-bottom: 1rem;
-            border: 2px solid #ffcc00; /* Yellow border for high visibility */
-            background-color: #332b00; /* Dark yellow background */
+            border: 2px solid #ffcc00; 
+            background-color: #332b00; 
             color: #ffeb99;
             border-radius: 0.5rem;
             font-size: 0.8rem;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -54,7 +55,7 @@
 
         <!-- CRITICAL INSTRUCTION -->
         <div class="key-instruction">
-            **CRITICAL: API KEY MISSING.** To resolve the 403 error, you **MUST** replace the empty quotes on line 124 with your actual Gemini API Key.
+            **TTP SYNTAX FIX: Check Complete.** The last error was caused by pasting the key into the wrong variable. You MUST ONLY edit the 'API Key Injection Point' line below (around line 124).
         </div>
 
         <!-- Input Area -->
@@ -77,7 +78,7 @@
                 Running VDP Simulation...
             </div>
             <div id="result-display" class="p-3 bg-gray-900 rounded-lg text-sm">
-                Awaiting input... The optimized path will appear here, starting with the Operational Audit.
+                Awaiting input... The optimized path will appear here.
             </div>
         </div>
 
@@ -85,12 +86,14 @@
 
     <script>
         // ----------------------------------------------------
-        // >>> CRITICAL INJECTION POINT (LINE 124) <<<
-        // PASTE YOUR GEMINI API KEY HERE TO RESOLVE 403 ERROR
-        const apiKey = ""; 
+        // >>> CRITICAL INJECTION POINT <<<
+        // ACTION: PASTE YOUR GEMINI API KEY BETWEEN THE QUOTES BELOW. 
+        // DO NOT EDIT ANY OTHER LINES.
+        const apiKey = ""; // <--- INSERT YOUR KEY HERE (e.g., "AIzaSyAeHnDWpblucfNuqNTrf0U88lnjRkfzhjQ")
         // ----------------------------------------------------
         
-        const API_URL = "AIzaSyAeHnDWpblucfNuqNTrf0U88lnjRkfzhjQ";
+        // This is the fixed, constant API endpoint URL. DO NOT CHANGE THIS LINE.
+        const API_URL_BASE = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=";
 
         // Function to make the API call with exponential backoff
         async function fetchWithBackoff(url, options, retries = 5, delay = 1000) {
@@ -100,7 +103,7 @@
                     if (response.ok) {
                         return await response.json();
                     }
-                    if (response.status === 429) { // Rate limit error
+                    if (response.status === 429) { 
                         await new Promise(resolve => setTimeout(resolve, delay));
                         delay *= 2; 
                     } else {
@@ -128,14 +131,19 @@
                 return;
             }
             
-            // CRITICAL CHECK: Ensure the key is present before proceeding
-            if (!apiKey) {
-                resultDisplay.textContent = "CRITICAL ERROR: API Key is missing. Please edit the HTML file to inject your valid key. (This causes the 403 error).";
+            // --- KINETIC ACTION: P3 Key Verification (Echo Test) ---
+            const keyLength = apiKey.length;
+            if (keyLength < 30) {
+                resultDisplay.textContent = `CRITICAL ERROR: API Key is too short (${keyLength} chars). Please check for truncation or incorrect placement.`;
                 return;
             }
-
+            
+            const keyEcho = `${apiKey.substring(0, 5)}...${apiKey.substring(keyLength - 5)}`;
+            // The echo test output is now the first message:
+            resultDisplay.textContent = `Key Echo Success: Stored key fragment is ${keyEcho}. Proceeding to API call...`;
+            // --- END Key Verification ---
+            
             // UI state management
-            resultDisplay.textContent = "";
             loadingIndicator.classList.remove('hidden');
             generateButton.disabled = true;
             generateButton.textContent = "Running VDP Simulation...";
@@ -157,7 +165,8 @@
                 body: JSON.stringify(payload)
             };
 
-            const finalApiUrl = API_URL + apiKey;
+            // CORRECT URL CONSTRUCTION: BASE URL + KEY VARIABLE
+            const finalApiUrl = API_URL_BASE + apiKey;
 
             try {
                 const result = await fetchWithBackoff(finalApiUrl, options);
@@ -170,6 +179,7 @@
                     // Simple cleaning for display in a non-Markdown renderer
                     generatedText = generatedText.replace(/###/g, '---').replace(/##/g, '---');
 
+                    // If successful, replace the Key Echo message with the final result
                     resultDisplay.textContent = generatedText;
                 } else {
                     resultDisplay.textContent = "VDP System Failure: Could not generate a TTP path. Check API status or refine your goal description.";
